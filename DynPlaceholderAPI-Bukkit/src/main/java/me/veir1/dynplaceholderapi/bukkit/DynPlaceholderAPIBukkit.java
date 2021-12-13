@@ -13,9 +13,12 @@ import me.veir1.dynplaceholderapi.bukkit.player.loader.PlaceholderPlayerLoader;
 import me.veir1.dynplaceholderapi.bukkit.player.cache.PlaceholderPlayerStorage;
 import me.veir1.dynplaceholderapi.bukkit.player.loader.PlaceholderPlayerHelper;
 import me.veir1.dynplaceholderapi.bukkit.proxy.ProxyMessenger;
-
 import me.veir1.dynplaceholderapi.bukkit.variable.VariableProcessor;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
 
@@ -41,8 +44,8 @@ public final class DynPlaceholderAPIBukkit extends JavaPlugin {
 
         variableProcessor = new VariableProcessor(this);
 
-        getServer().getPluginCommand("dynpapi").setExecutor(new PluginCommand());
-        getServer().getPluginCommand("dynpapireload").setExecutor(new ReloadConfigCommand(this));
+        registerCommand("dynpapi", new PluginCommand());
+        registerCommand("dynpapireload", new ReloadConfigCommand(this));
 
         if (getConfig().getBoolean("support.placeholderapi")) {
             if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
@@ -62,5 +65,16 @@ public final class DynPlaceholderAPIBukkit extends JavaPlugin {
     @Override
     public void onDisable() {
         dynPlaceholderAPIBukkit = null;
+    }
+
+    private void registerCommand(final String commandName, final @NotNull CommandExecutor commandExecutor) {
+        final org.bukkit.command.PluginCommand command = getServer().getPluginCommand(commandName);
+        if (command == null) {
+            Bukkit.getLogger().log(Level.WARNING, "Could not register command " + commandName + ", make sure it's registered on plugin.yml file.");
+            return;
+        }
+
+        command.setExecutor(commandExecutor);
+        Bukkit.getLogger().log(Level.WARNING, "Registered command " + commandName + ".");
     }
 }
