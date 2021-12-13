@@ -1,0 +1,10 @@
+support: # Supported external variable processors
+  placeholderapi: true
+channel_names: "dynpapi:msg" # The PM channel the plugin's using to get players info from BungeeCord, must be the same on Bukkit and Bungee module config.yml files.
+admin_permission: dynpapi.admin # Will give access to reload cfg command.
+load_delay: 15 # Delay in millins (20 = 1 second) before the server sends the IP request to BungeeCord when the players joins. Should be anything adove 15.
+variables: # Variable list
+  default: # All IP dots will be replaced with slashes (-), dots are not supported due to YAML incompatibilities. 0.0.0.0 = 0-0-0-0.
+    example: "Default example var" # Example placeholder -> %dynpapi_example% will show Ejemplo if the player joined using IP 0.0.0.0
+  0-0-0-0: # All IP dots will be replaced with slashes (-), dots are not supported due to YAML incompatibilities. 0.0.0.0 = 0-0-0-0.
+    example: "0.0.0.0 example var" # Example placeholder -> %dynpapi_example% will show Ejemplo if the player joined using IP 0.0.0.0

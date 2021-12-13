@@ -1,0 +1,1 @@
+channel_names: "dynpapi:msg" # The PM channel the plugin's using to get players info from BungeeCord, must be the same on Bukkit and Bungee module config.yml files.
