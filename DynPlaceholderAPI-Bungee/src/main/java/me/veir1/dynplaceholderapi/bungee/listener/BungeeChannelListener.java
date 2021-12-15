@@ -10,12 +10,12 @@ import net.md_5.bungee.event.EventHandler;
 import java.io.*;
 import java.util.logging.Level;
 
-public final class ChannelListener implements Listener {
+public final class BungeeChannelListener implements Listener {
     private final DynPlaceholderAPIBungee dynPlaceholderAPIBungee;
 
     private final String channelName;
     
-    public ChannelListener(final DynPlaceholderAPIBungee dynPlaceholderAPIBungee) {
+    public BungeeChannelListener(final DynPlaceholderAPIBungee dynPlaceholderAPIBungee) {
         this.dynPlaceholderAPIBungee = dynPlaceholderAPIBungee;
 
         channelName = dynPlaceholderAPIBungee.getConfiguration().getString("channel_names");
@@ -45,8 +45,8 @@ public final class ChannelListener implements Listener {
 
                     sendToBukkit(player.getName(), usedIp, server);
                 }
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
                 dynPlaceholderAPIBungee.getLogger().log(Level.SEVERE, "Something went wrong while handling response on channel " + channelName);
             }
         }

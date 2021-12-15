@@ -6,6 +6,7 @@ import me.veir1.dynplaceholderapi.bukkit.command.PluginCommand;
 import me.veir1.dynplaceholderapi.bukkit.command.ReloadConfigCommand;
 import me.veir1.dynplaceholderapi.bukkit.listener.PlayerAccessListener;
 import me.veir1.dynplaceholderapi.bukkit.placeholderapi.PlaceholderAPIExpansion;
+import me.veir1.dynplaceholderapi.bukkit.proxy.RedisMessenger;
 import me.veir1.dynplaceholderapi.bukkit.proxy.communicator.ChannelCommunicator;
 import me.veir1.dynplaceholderapi.bukkit.player.cache.PlaceholderPlayerCache;
 import me.veir1.dynplaceholderapi.bukkit.player.loader.PlaceholderPlayerLoader;
@@ -13,6 +14,9 @@ import me.veir1.dynplaceholderapi.bukkit.player.loader.PlaceholderPlayerLoader;
 import me.veir1.dynplaceholderapi.bukkit.player.cache.PlaceholderPlayerStorage;
 import me.veir1.dynplaceholderapi.bukkit.player.loader.PlaceholderPlayerHelper;
 import me.veir1.dynplaceholderapi.bukkit.proxy.ProxyMessenger;
+import me.veir1.dynplaceholderapi.bukkit.redis.RedisClient;
+import me.veir1.dynplaceholderapi.bukkit.redis.config.RedisClientConfiguration;
+import me.veir1.dynplaceholderapi.bukkit.redis.connector.RedisConnection;
 import me.veir1.dynplaceholderapi.bukkit.variable.VariableProcessor;
 
 import org.bukkit.Bukkit;
@@ -38,7 +42,8 @@ public final class DynPlaceholderAPIBukkit extends JavaPlugin {
 
         saveDefaultConfig();
 
-        channelCommunicator = new ProxyMessenger(this);
+        setupChannelConnection();
+
         placeholderPlayerCache = new PlaceholderPlayerStorage();
         placeholderPlayerLoader = new PlaceholderPlayerHelper(this);
 
@@ -76,5 +81,36 @@ public final class DynPlaceholderAPIBukkit extends JavaPlugin {
 
         command.setExecutor(commandExecutor);
         Bukkit.getLogger().log(Level.WARNING, "Registered command " + commandName + ".");
+    }
+
+    private void setupChannelConnection() {
+        final String channelType = getConfig().getString("channel_type");
+        if (channelType == null) {
+            getLogger().log(Level.SEVERE, "Invalid channel type detected. Disabling plugin...");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        switch (channelType) {
+            case "bungee": {
+                this.channelCommunicator = new ProxyMessenger(this);
+                break;
+            }
+            case "redis": {
+                final RedisClientConfiguration redisClientConfiguration = new RedisClientConfiguration(
+                    getConfig().getString("redis.address"),
+                    getConfig().getInt("redis.port"),
+                    getConfig().getString("redis.password"),
+                    getConfig().getString("channel_names")
+                );
+                final RedisConnection redisConnection = new RedisClient(this, redisClientConfiguration);
+                this.channelCommunicator = new RedisMessenger(this, redisConnection);
+                break;
+            }
+            default: {
+                getLogger().log(Level.SEVERE, "Invalid channel type detected. Disabling plugin...");
+                getServer().getPluginManager().disablePlugin(this);
+                break;
+            }
+        }
     }
 }

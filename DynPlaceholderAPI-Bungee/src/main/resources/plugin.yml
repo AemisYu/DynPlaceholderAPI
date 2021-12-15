@@ -1,5 +1,5 @@
 name: DynPlaceholderAPI-Bungee
-version: 0.1.0
+version: 0.2.0
 author: veir1
 description: Set dynamic placeholders with the IP used by the player when entering a server through BungeeCord.
 main: me.veir1.dynplaceholderapi.bungee.DynPlaceholderAPIBungee

@@ -1,1 +1,6 @@
+channel_type: bungee # Channel types: bungee - redis
+redis:
+  address: 0.0.0.0
+  port: 6379
+  password: "" # Empty this to disable NOAUTH processing.
 channel_names: "dynpapi:msg" # The PM channel the plugin's using to get players info from BungeeCord, must be the same on Bukkit and Bungee module config.yml files.

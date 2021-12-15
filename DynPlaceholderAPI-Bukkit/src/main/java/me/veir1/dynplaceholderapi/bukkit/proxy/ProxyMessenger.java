@@ -35,7 +35,7 @@ public final class ProxyMessenger implements ChannelCommunicator {
 
         final String channelNames = plugin.getConfig().getString("channel_names");
 
-        if (channelNames == null) {
+        if (channelNames == null || channelNames.equals("")) {
             plugin.getLogger().log(Level.SEVERE, "Invalid channel_names variable found on config.yml, disabling plugin.");
             plugin.getServer().getPluginManager().disablePlugin(plugin);
             return;
@@ -49,6 +49,7 @@ public final class ProxyMessenger implements ChannelCommunicator {
         messenger.registerIncomingPluginChannel(plugin, incomingChannelName, messageListener);
     }
 
+    @Override
     public CompletableFuture<String> getUsedIP(final Player player) {
         final CompletableFuture<String> future = new CompletableFuture<>();
 

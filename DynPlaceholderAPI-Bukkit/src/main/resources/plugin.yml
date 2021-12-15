@@ -1,5 +1,5 @@
 name: DynPlaceholderAPI-Bukkit
-version: 0.1.0
+version: 0.2.0
 description: Set dynamic placeholders with the IP used by the player when entering a server through BungeeCord.
 main: me.veir1.dynplaceholderapi.bukkit.DynPlaceholderAPIBukkit
 softdepend: [PlaceholderAPI]

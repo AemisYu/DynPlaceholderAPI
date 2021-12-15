@@ -1,5 +1,10 @@
 support: # Supported external variable processors
   placeholderapi: true
+channel_type: bungee # Channel types: bungee - redis
+redis:
+  address: 0.0.0.0
+  port: 6379
+  password: "" # Empty this to disable NOAUTH processing.
 channel_names: "dynpapi:msg" # The PM channel the plugin's using to get players info from BungeeCord, must be the same on Bukkit and Bungee module config.yml files.
 admin_permission: dynpapi.admin # Will give access to reload cfg command.
 load_delay: 15 # Delay in millins (20 = 1 second) before the server sends the IP request to BungeeCord when the players joins. Should be anything adove 15.
